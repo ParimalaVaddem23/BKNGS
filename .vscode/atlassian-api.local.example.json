@@ -1,0 +1,12 @@
+{
+  "jira": {
+    "baseUrl": "",
+    "email": "",
+    "token": ""
+  },
+  "confluence": {
+    "baseUrl": "",
+    "email": "",
+    "token": ""
+  }
+}

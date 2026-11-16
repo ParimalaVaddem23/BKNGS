@@ -9,3 +9,4 @@ node_modules/
 
 # Environment secrets
 .env
+.vscode/atlassian-api.local.json
