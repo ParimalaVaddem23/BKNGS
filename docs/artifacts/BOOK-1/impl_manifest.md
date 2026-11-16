@@ -49,3 +49,14 @@ None - changes left uncommitted per user request.
 ## Open Issues / Follow-ups
 - Existing `authToken` fixture logs the token via `console.log` (out of scope; not changed).
 - Shared public Restful-Booker instance may be flaky; no retries by design.
+
+## Review Fixes (Round 1)
+| Finding | Status (fixed / not fixed) | Files | Commit | Notes |
+|---|---|---|---|---|
+| C-001 | fixed (partial; user action required) | `.gitignore`, `.env.example`, `.env` (untracked) | db68f67 | `.env` untracked with `git rm --cached` (local file kept), git-ignored, `.env.example` added with placeholder keys. **User action:** rotate `AUTH_USERNAME` / `AUTH_PASSWORD`, since they remain in history (commit `4ad52ea`); purging history needs a rewrite the agent must not do. |
+| M-001 | fixed | `tests/fixtures.ts` | 75d18ae | Replaced the token log with a fixed `Auth token generated` message. Verified token absent from test output. |
+| m-001 | fixed | `tests/BOOK-1.spec.ts` | 5de465f | `error instanceof Error ? error.message : String(error)`. |
+
+Verification: baseline 1 passed / 0 failed, `tsc` exit 0 → final 1 passed / 0 failed, `tsc` exit 0.
+
+Observation for re-review (not a finding, not changed): when the best-effort `deleteBooking()` cleanup fails, Playwright's error message includes a call log with the `Cookie: token=...` header, and the spec's `console.warn` prints that message. This was seen once in the baseline run (ECONNRESET on DELETE).
