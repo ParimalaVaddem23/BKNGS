@@ -68,4 +68,16 @@ Observation for re-review (now raised as M-002 and fixed in Round 2): when the b
 
 Verification: baseline 1 passed / 0 failed, `tsc` exit 0 → final 1 passed / 0 failed, `tsc` exit 0; token absent from test output.
 
-Still open from Round 1 (user action): rotate `AUTH_USERNAME` / `AUTH_PASSWORD`, since the old `.env` remains in git history (commit `4ad52ea`).
+Still open from Round 1 (user action): rotate `AUTH_USERNAME` / `AUTH_PASSWORD`, since the old `.env` remains in git history (commit `4ad52ea`, which is `origin/main`).
+
+## Review Fixes (Round 3)
+Round limit note: `code_review.md` is at Review Round 3 (`max_review_iterations`: 3) and records no authorisation for another round. The user explicitly invoked `@sdlc-review-fix BOOK-1` after being told this, and that invocation was treated as the authorisation. `code_review.md` is read-only for this agent, so the authorisation is recorded here. The next `@code-review` run would be round 4.
+
+| Finding | Status (fixed / not fixed) | Files | Commit | Notes |
+|---|---|---|---|---|
+| C-002 | fixed (partial; user action required) | `.gitignore`, `.vscode/atlassian-api.local.json` (untracked), `.vscode/atlassian-api.local.example.json` (new) | d6819df | Untracked with `git rm --cached` (local file kept), git-ignored, and an example file added with the same keys and empty values. Verified `git ls-files` no longer lists the real file and `git check-ignore` matches. **User action:** revoke and regenerate the Jira and Confluence API tokens. The old file is on `origin/main` (commit `4ad52ea`) and in local `refs/agents/*` checkpoints; the agent must not rewrite history. |
+| m-002 | fixed | `tests/fixtures.ts` | dd3da77 | `const tokenBody: AuthResponse = await authResponse.json();` with the import from `./interfaces/types`. |
+
+Verification: baseline 1 passed / 0 failed, `tsc` exit 0 → final 1 passed / 0 failed, `tsc` exit 0; token absent from test output.
+
+User actions still outstanding: (1) revoke and regenerate the Jira and Confluence API tokens (C-002); (2) rotate `AUTH_USERNAME` / `AUTH_PASSWORD` (C-001).
