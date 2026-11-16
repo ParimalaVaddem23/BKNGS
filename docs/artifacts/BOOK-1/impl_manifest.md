@@ -59,4 +59,13 @@ None - changes left uncommitted per user request.
 
 Verification: baseline 1 passed / 0 failed, `tsc` exit 0 → final 1 passed / 0 failed, `tsc` exit 0.
 
-Observation for re-review (not a finding, not changed): when the best-effort `deleteBooking()` cleanup fails, Playwright's error message includes a call log with the `Cookie: token=...` header, and the spec's `console.warn` prints that message. This was seen once in the baseline run (ECONNRESET on DELETE).
+Observation for re-review (now raised as M-002 and fixed in Round 2): when the best-effort `deleteBooking()` cleanup fails, Playwright's error message includes a call log with the `Cookie: token=...` header, and the spec's `console.warn` printed that message. This was seen once in the baseline run (ECONNRESET on DELETE).
+
+## Review Fixes (Round 2)
+| Finding | Status (fixed / not fixed) | Files | Commit | Notes |
+|---|---|---|---|---|
+| M-002 | fixed | `tests/BOOK-1.spec.ts` | 0c5a3d0 | The cleanup warning now logs only the first line of the error message, dropping Playwright's call log that carries the `Cookie: token=...` header. Confirmed with a scratch script (since removed): a failed DELETE with a fake token has the token in the full message but not in the first line. |
+
+Verification: baseline 1 passed / 0 failed, `tsc` exit 0 → final 1 passed / 0 failed, `tsc` exit 0; token absent from test output.
+
+Still open from Round 1 (user action): rotate `AUTH_USERNAME` / `AUTH_PASSWORD`, since the old `.env` remains in git history (commit `4ad52ea`).
