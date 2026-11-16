@@ -47,7 +47,8 @@ test.describe('BOOK-1: Retrieve Booking by Valid ID', () => {
       try {
         await bookingAPI.deleteBooking(bookingId);
       } catch (error) {
-        const reason = error instanceof Error ? error.message : String(error);
+        // Playwright appends a call log with the Cookie token after the first line
+        const reason = (error instanceof Error ? error.message : String(error)).split('\n')[0];
         console.warn(`WARN: cleanup of booking ${bookingId} failed: ${reason}`);
       }
     }
