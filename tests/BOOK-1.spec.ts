@@ -47,7 +47,8 @@ test.describe('BOOK-1: Retrieve Booking by Valid ID', () => {
       try {
         await bookingAPI.deleteBooking(bookingId);
       } catch (error) {
-        console.warn(`WARN: cleanup of booking ${bookingId} failed: ${(error as Error).message}`);
+        const reason = error instanceof Error ? error.message : String(error);
+        console.warn(`WARN: cleanup of booking ${bookingId} failed: ${reason}`);
       }
     }
   });
