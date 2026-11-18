@@ -1,4 +1,5 @@
 import { test as base, APIRequestContext } from '@playwright/test';
+import { AuthResponse } from './interfaces/types';
 
 export type TestFixtures = {
   apiRequest: APIRequestContext;
@@ -31,10 +32,10 @@ export const test = base.extend<TestFixtures>({
       throw new Error('Failed to generate auth token');
     }
 
-    const tokenBody = await authResponse.json();
+    const tokenBody: AuthResponse = await authResponse.json();
     const token = tokenBody.token;
 
-    console.log('Auth Token Generated:', token);
+    console.log('Auth token generated');
 
     // Use the token in tests
     await use(token);
