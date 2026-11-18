@@ -44,13 +44,13 @@ Invocation: `@pr-creation <TICKET>`
    2. **Commit** with a Conventional Commits message (`<type>(<scope>): <summary> [<TICKET>]`, e.g. `docs(BOOK-1): add SDLC artifacts and agent updates`) and the trailer `Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>`. Use separate commits for unrelated concerns (e.g. `test:`, `docs:`, `chore:`).
    3. **Push** the branch (`git push -u origin <branch>`; never force).
    4. Immediately after a successful push, create or update the PR using GitHub MCP tools, without asking for further confirmation. 
-   If an open PR already exists:
-   - Use GitHub MCP pull request tools to retrieve and update the PR.
-   Otherwise:
-   - Use the GitHub MCP `create_pull_request` tool to create a draft PR.
-   Do not use `gh pr create` when `create_pull_request` is available.
+      - Get owner and repo from git remote get-url origin, and head from git branch --show-current. Use the repo's default branch as base, or ask only if it cannot be determined.
+      - Check for an existing open PR for the branch (e.g. list_pull_requests with head = <owner>:<branch>).
+      - If one exists, use the GitHub MCP pull request update tool to set the new title and body.
+      - Otherwise call the GitHub MCP create_pull_request tool with owner, repo, head, base, title, body and draft: true.
+      - Do not use gh pr create or gh pr edit when the MCP tools are available.
+      - If a call fails, report the exact error message and stop. Do not fall back to gh or manual output unless the tool is genuinely absent from your tool list, and do not proceed without confirmation.
 6. **Report** the PR URL, and suggest reviewers/labels (do not assign without confirmation).
-
 # PR Description Template
 
 ````markdown
