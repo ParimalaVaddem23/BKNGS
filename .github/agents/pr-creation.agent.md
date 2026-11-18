@@ -38,12 +38,13 @@ Invocation: `@pr-creation <TICKET>`
 1. **Analyze**: summarize changes by area (tests, page objects, fixtures, config, API/DTO, docs). Flag unrelated or oversized changes (>~400 lines or mixed concerns) and suggest splitting.
 2. **Draft title**: Conventional Commits style, <72 chars, e.g. `test(carts): add API tests for BOOK-1 CRUD [PROJ-123]`.
 3. **Draft description** using the template below.
-4. **Show the draft** and ask for approval. Allow edits.
-5. **On approval only**:
+4. **Show the draft** and ask for approval to stage, commit and push. Allow edits.
+5. **On approval only** (this single approval covers stage, commit, push, and the PR step below):
    1. **Stage** all modified and new artifacts/files with `git add -A` (this honors `.gitignore`; ignored files are never staged or force-added). Re-check `git status --short` afterward for anything sensitive.
    2. **Commit** with a Conventional Commits message (`<type>(<scope>): <summary> [<TICKET>]`, e.g. `docs(BOOK-1): add SDLC artifacts and agent updates`) and the trailer `Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>`. Use separate commits for unrelated concerns (e.g. `test:`, `docs:`, `chore:`).
    3. **Push** the branch (`git push -u origin <branch>`; never force).
-   4. If an open PR already exists:
+   4. Immediately after a successful push, create or update the PR using GitHub MCP tools, without asking for further confirmation. 
+   If an open PR already exists:
    - Use GitHub MCP pull request tools to retrieve and update the PR.
    Otherwise:
    - Use the GitHub MCP `create_pull_request` tool to create a draft PR.
