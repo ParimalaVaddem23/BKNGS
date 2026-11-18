@@ -10,6 +10,7 @@ tools:
   - read
   - search
   - execute
+  - github/*
 user-invocable: true
 ---
 
@@ -31,7 +32,10 @@ Invocation: `@pr-creation <TICKET>`
 2. No unresolved **Critical** or **Major** code-review findings in `code_review.md`. Security findings escalated must be closed.
 3. Working tree: list every modified, staged, and untracked file (`git status --short`). All of them are staged and committed in step 5, except files matched by `.gitignore` (git already skips these; never use `git add -f`). Never stage secrets/`.env` values or local credentials; if a file looks sensitive, stop and ask.
 4. Tests were run and passed. If there is no evidence, ask the user to run them (or run `npx playwright test` with their consent); do not claim they passed.
-5. GitHub access is available through the GitHub MCP server or the `gh` CLI.
+5. GitHub MCP is the preferred and required mechanism for pull request operations.
+- Use GitHub MCP tools whenever available.
+- Do not suggest or require `gh auth login` if GitHub MCP tools are present.
+- Only fall back to the GitHub CLI when GitHub MCP tools are unavailable.
 
 # Process
 
@@ -43,7 +47,11 @@ Invocation: `@pr-creation <TICKET>`
    1. **Stage** all modified and new artifacts/files with `git add -A` (this honors `.gitignore`; ignored files are never staged or force-added). Re-check `git status --short` afterward for anything sensitive.
    2. **Commit** with a Conventional Commits message (`<type>(<scope>): <summary> [<TICKET>]`, e.g. `docs(BOOK-1): add SDLC artifacts and agent updates`) and the trailer `Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>`. Use separate commits for unrelated concerns (e.g. `test:`, `docs:`, `chore:`).
    3. **Push** the branch (`git push -u origin <branch>`; never force).
-   4. If an open PR already exists for the branch (`gh pr list --head <branch>`), update it with `gh pr edit`; otherwise create the PR as a **draft** (via `gh pr create --draft` or the GitHub MCP server).
+   4. If an open PR already exists:
+   - Use GitHub MCP pull request tools to retrieve and update the PR.
+   Otherwise:
+   - Use the GitHub MCP `create_pull_request` tool to create a draft PR.
+   Do not use `gh pr create` when `create_pull_request` is available.
 6. **Report** the PR URL, and suggest reviewers/labels (do not assign without confirmation).
 
 # PR Description Template
