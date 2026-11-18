@@ -6,11 +6,7 @@ description: >
   `@pr-creation <TICKET>`  or via handoff from `@sdlc` (Phase 8). Stages all
   non-ignored changes, commits with a Conventional Commits message, pushes the
   branch and opens (or updates) the PR.
-tools:
-  - read
-  - search
-  - execute
-  - github/*
+tools: ['*']
 user-invocable: true
 ---
 
